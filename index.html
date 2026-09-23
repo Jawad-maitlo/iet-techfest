@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interconnect University Hackathon — Think. Build. Connect. Organized by Batch 24 at IBA IET Khairpur Campus." />
+  <title>Interconnect University Hackathon</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="images/logo.png" type="image/png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/university.css" />
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#hero">Skip to main content</a>
+  <div class="utility-bar"><div class="container"><span>IBA IET KHAIRPUR <span class="utility-extra"> / A COMMUNITY OF BUILDERS</span></span><a href="announcements.html">News &amp; updates ↗</a></div></div>
+
+  <!-- BACKGROUND -->
+  <div id="bg-canvas">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+  <div id="particles"></div>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      <img src="images/logo.png" alt="Interconnect Logo" class="logo-img" id="site-logo" />
+      <span class="logo-text">INTERCONNECT <span class="grad-text brand-subtitle">UNIVERSITY HECKATHON</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#universities">Universities</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="team.html">Team</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#register" class="btn btn-primary" id="nav-register-btn">Register Now</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="#universities">Universities</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="team.html">Team</a>
+    <a href="#register" class="btn btn-primary" id="mobile-register-btn">Register Now →</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-badge reveal">BATCH 24 PRESENTS / 01 OCTOBER 2026</div>
+          <h1 class="hero-title reveal reveal-delay-1">
+            Think.<br>
+            <span class="grad-text">Build.</span><br>
+            Connect.
+          </h1>
+          <p class="hero-sub reveal reveal-delay-2">
+            Where students from across universities converge to tackle real-world problems, forge powerful connections, and build tomorrow's solutions — together.
+          </p>
+          <div class="hero-ctas reveal reveal-delay-3">
+            <a href="#register" class="btn btn-primary hero-register-btn">Register Now →</a>
+            <a href="#register" class="btn btn-ghost">Event Details</a>
+          </div>
+          <div class="hero-meta reveal reveal-delay-4">
+            <div class="hero-meta-item">📍 <a href="https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur" target="_blank" rel="noopener" class="venue-link">IBA IET · Khairpur Campus</a></div>
+            <div class="hero-meta-item">📅 01 October 2026 · Batch 24</div>
+          </div>
+        </div>
+        <div class="hero-visual reveal reveal-delay-2">
+          <div class="event-poster">
+            <div class="poster-art" aria-hidden="true"></div>
+            <span class="poster-kicker">INTERCONNECT / 2026</span>
+            <h2>Different minds.<br>Shared possibilities.</h2>
+            <div class="poster-bottom"><span>01 OCTOBER<br>THURSDAY</span><span>IBA IET<br>KHAIRPUR CAMPUS</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOST AND FEATURING UNIVERSITIES -->
+  <section id="universities" class="universities-strip" aria-label="Host and featuring universities">
+    <div class="container university-roster">
+      <div class="host-university">
+        <span class="section-label">Host University</span>
+        <h2>IBA IET</h2>
+        <p>Institute of Emerging Technologies · Khairpur Campus</p>
+      </div>
+      <div class="featuring-universities">
+        <h3>Featuring Universities</h3>
+        <ul>
+          <li>Shah Abdul Latif University</li>
+          <li>(MUET) Shaheed Zulfiqar Ali Bhutto Campus Khairpur</li>
+          <li>Benazir Bhutto Shaheed University of Technology and Skill Development</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN TIMER -->
+  <section id="countdown" class="countdown-section">
+    <div class="container">
+      <div class="countdown-inner reveal">
+        <div class="countdown-label">⚡ Event Starts In</div>
+        <div class="countdown-grid">
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-days">00</div>
+            <div class="countdown-unit">Days</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-hours">00</div>
+            <div class="countdown-unit">Hours</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-mins">00</div>
+            <div class="countdown-unit">Minutes</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-secs">00</div>
+            <div class="countdown-unit">Seconds</div>
+          </div>
+        </div>
+        <div class="countdown-date-row">
+          <span class="countdown-date-badge">📅 01 October 2026</span>
+          <span class="countdown-divider">·</span>
+          <a href="https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur"
+             target="_blank" rel="noopener" class="countdown-venue-link">
+            📍 IBA — Institute of Emerging Technologies, Khairpur ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+  <!-- FINAL CTA -->
+  <section id="cta" class="section cta-section">
+    <div class="cta-glow"></div>
+    <div class="container cta-inner text-center">
+      <div class="section-label reveal mx-auto">Get Involved</div>
+      <h2 class="cta-heading reveal reveal-delay-1">Ready to <span class="grad-text">Connect</span><br>&amp; <span class="grad-text">Innovate?</span></h2>
+      <p class="cta-sub reveal reveal-delay-2">Your idea could be the next big thing. Join students from across universities, bring your skills, and build something that matters.</p>
+      <div class="cta-btns reveal reveal-delay-3">
+        <a href="#register" class="btn btn-primary btn-lg cta-register-btn">Register Now →</a>
+        <a href="#register" class="btn btn-ghost btn-lg">Event Details</a>
+      </div>
+      <p class="cta-footnote reveal reveal-delay-4">Your Skills + Our Platform = Bigger Impact</p>
+    </div>
+  </section>
+
+  <!-- REGISTRATION / QR SECTION -->
+  <section id="register" class="section register-section">
+    <div class="register-glow"></div>
+    <div class="container register-inner">
+      <div class="text-center">
+        <div class="section-label reveal mx-auto">Join the Hackathon</div>
+        <h2 class="section-heading reveal reveal-delay-1">
+          Register <span class="grad-text">Now</span>
+        </h2>
+        <p class="section-sub reveal reveal-delay-2 mx-auto">
+          Fill out the Google Form to secure your spot. Scan the QR code or click the button below.
+        </p>
+      </div>
+
+      <!-- PRICING CARDS -->
+      <div class="pricing-grid reveal reveal-delay-1">
+        <div class="pricing-card pricing-popular">
+          <div class="pricing-badge">👥 Most Popular</div>
+          <div class="pricing-icon">🏆</div>
+          <div class="pricing-type">Trio Team</div>
+          <div class="pricing-desc">3 members</div>
+          <div class="pricing-price">Rs. <span>1,200</span></div>
+          <a href="#register" class="btn btn-primary pricing-btn">Register →</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-icon">⚡</div>
+          <div class="pricing-type">Duo Team</div>
+          <div class="pricing-desc">2 members</div>
+          <div class="pricing-price">Rs. <span>1,000</span></div>
+          <a href="#register" class="btn btn-ghost pricing-btn">Register →</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-icon">🎯</div>
+          <div class="pricing-type">Solo</div>
+          <div class="pricing-desc">1 member</div>
+          <div class="pricing-price">Rs. <span>600</span></div>
+          <a href="#register" class="btn btn-ghost pricing-btn">Register →</a>
+        </div>
+      </div>
+      <p class="pricing-note reveal reveal-delay-2">🏅 E-Certificates for all participants · 🎁 Exciting prizes for top teams</p>
+
+      <div class="register-grid reveal reveal-delay-2">
+
+        <!-- QR CODE CARD -->
+        <div class="qr-card glass-card">
+          <div class="qr-label">Scan to Register</div>
+          <div class="qr-wrapper" id="qr-wrapper">
+            <!-- QR auto-generated by js/registration.js -->
+          </div>
+          <p class="qr-hint">Point your phone camera at the QR code</p>
+        </div>
+
+        <!-- REGISTRATION INFO CARD -->
+        <div class="reg-info-card glass-card">
+          <div class="reg-info-icon">📋</div>
+          <h3 class="reg-info-title">Registration Details</h3>
+          <ul class="reg-checklist">
+            <li>✅ All skill levels welcome</li>
+            <li>✅ Last date to register: <strong style="color:var(--c-pink)">27 Sep 2026</strong></li>
+            <li>✅ Date: <strong>01 October 2026</strong></li>
+            <li>✅ Venue: <a href="https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur" target="_blank" rel="noopener" class="venue-link">IBA IET — Khairpur Campus ↗</a></li>
+            <li>✅ Organized by Batch 24</li>
+          </ul>
+          <div id="register-btn-wrap" class="reg-btn-wrap">
+            <!-- Button injected by js/registration.js -->
+          </div>
+          <p class="reg-form-link" id="reg-form-link-text"></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="images/logo.png" alt="Interconnect Logo" class="logo-img" />
+            <span class="logo-text">INTERCONNECT <span class="grad-text brand-subtitle">UNIVERSITY HECKATHON</span></span>
+          </div>
+          <p>The premier university hackathon connecting students, ideas, and universities across the region. Think. Build. Connect.</p>
+          <div class="footer-socials">
+            <a href="mailto:iettechfest.hackathon@gmail.com" class="social-btn" title="Email" aria-label="Email"><img src="images/email.png" width="20" height="20" alt="" /></a>
+            <a href="https://wa.me/923063394955" target="_blank" rel="noopener" class="social-btn" title="WhatsApp" aria-label="WhatsApp"><img src="images/whatsapp.png" width="20" height="20" alt="" /></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#universities">Universities</a></li>
+            <li><a href="announcements.html">Announcements</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="team.html">Team</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Universities</h4>
+          <ul>
+            <li><a href="https://iiet.edu.pk/" target="_blank" rel="noopener noreferrer">IBA IET ↗</a></li>
+            <li><a href="https://www.salu.edu.pk" target="_blank" rel="noopener">Shah Abdul Latif University ↗</a></li>
+            <li><a href="https://www.muet.edu.pk" target="_blank" rel="noopener">(MUET) Shaheed Zulfiqar Ali Bhutto Campus Khairpur ↗</a></li>
+            <li><a href="https://bbsutsd.edu.pk/" target="_blank" rel="noopener">Benazir Bhutto Shaheed University of Technology and Skill Development ↗</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul>
+            <li>
+              <a href="mailto:iettechfest.hackathon@gmail.com" class="footer-contact-link">
+                <img src="images/email.png" class="footer-contact-icon" width="20" height="20" alt="" />
+                <span>iettechfest.hackathon@gmail.com</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/923063394955" target="_blank" rel="noopener" class="footer-contact-link">
+                <img src="images/whatsapp.png" class="footer-contact-icon" width="20" height="20" alt="" />
+                <span>WhatsApp</span>
+              </a>
+            </li>
+            <li><a href="https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur" target="_blank" rel="noopener">📍 IBA IET Khairpur Campus ↗</a></li>
+            <li><span style="color:var(--c-muted);font-size:0.82rem">Organized by Batch 24</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Interconnect University Hackathon. Organized by Batch 24 — IBA IET Khairpur.</span>
+        <a href="admin.html">Organizer sign in ↗</a>
+      </div>
+      <p class="footer-developers">Website developed by <a href="https://www.linkedin.com/in/jawad-ali-b50525325/" target="_blank" rel="noopener noreferrer">Jawad Ali</a> &amp; <a href="https://www.linkedin.com/in/muhammad-farhan-ali-b76809387/" target="_blank" rel="noopener noreferrer">Muhammad Farhan Ali</a>.</p>
+    </div>
+  </footer>
+
+  <!-- QR Code library (auto-generates QR from URL — no image needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- JS -->
+  <script src="js/data.js"></script>
+  <script src="js/countdown.js"></script>
+
+
+  <script src="js/navbar.js"></script>
+  <script src="js/registration.js"></script>
+  <script src="js/reveal.js"></script>
+</body>
+</html>

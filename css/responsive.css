@@ -1,0 +1,57 @@
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1024px) {
+  .features-grid { grid-template-columns: repeat(2,1fr); }
+  .hackathon-cards { grid-template-columns: repeat(2,1fr); }
+  .team-grid { grid-template-columns: repeat(2,1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  :root { --section-py: 72px; }
+
+  /* Navbar */
+  nav .btn { display: none; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+
+  /* Hero */
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { order: -1; }
+  #network-container svg { max-width: 320px; margin: 0 auto; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; }
+
+  /* Features */
+  .features-grid { grid-template-columns: 1fr; }
+
+  /* Timeline */
+  .timeline { flex-direction: column; gap: 24px; }
+  .timeline-line { display: none; }
+  .timeline-step { flex-direction: row; text-align: left; gap: 20px; align-items: flex-start; }
+  .step-node { flex-shrink: 0; }
+
+  /* Hackathon */
+  .hackathon-cards { grid-template-columns: 1fr 1fr; }
+
+  /* Tracks */
+  .tracks-grid { grid-template-columns: 1fr; }
+
+  /* Team */
+  .team-grid { grid-template-columns: repeat(2,1fr); }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .section-header-row { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .hackathon-cards { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .hero-ctas { flex-direction: column; }
+  .hero-ctas .btn { width: 100%; justify-content: center; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}

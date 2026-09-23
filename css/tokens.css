@@ -1,0 +1,39 @@
+/* ============================================================
+   DESIGN TOKENS — Edit these to restyle the entire site
+============================================================ */
+:root {
+  /* Colors */
+  --c-bg:        #050814;
+  --c-navy:      #080d1e;
+  --c-purple:    #7c3aed;
+  --c-purple-lt: #a855f7;
+  --c-blue:      #2563eb;
+  --c-blue-lt:   #38bdf8;
+  --c-pink:      #ec4899;
+  --c-yellow:    #fbbf24;
+  --c-white:     #f1f5f9;
+  --c-muted:     #94a3b8;
+  --c-border:    rgba(124,58,237,0.25);
+
+  /* Gradients */
+  --grad-main: linear-gradient(135deg,#7c3aed,#2563eb,#ec4899);
+  --grad-text: linear-gradient(90deg,#a855f7,#38bdf8,#ec4899);
+  --grad-card: linear-gradient(135deg,rgba(124,58,237,0.08),rgba(37,99,235,0.06));
+
+  /* Glass */
+  --glass-bg:     rgba(8,13,30,0.6);
+  --glass-border: rgba(255,255,255,0.08);
+
+  /* Typography */
+  --font-display: 'Outfit', sans-serif;
+  --font-body:    'Space Grotesk', sans-serif;
+
+  /* Easing */
+  --ease-out:    cubic-bezier(0.16,1,0.3,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+
+  /* Spacing */
+  --section-py: 100px;
+  --container:  1200px;
+  --gap:        24px;
+}
