@@ -21,7 +21,7 @@ const SITE_DATA = {
   /* ── REGISTRATION ── */
   registration: {
     // Live Google Form for hackathon registration
-    formUrl: "https://forms.gle/fJYBbCeMTUFbqWQm9",
+    formUrl: "https://forms.gle/SvkFWqJ1epSzit8UA",
 
     // Set to true once registration is open, false to show "Coming Soon"
     isOpen: true,
