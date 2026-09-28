@@ -23,11 +23,7 @@ const SITE_DATA = {
     // Live Google Form for hackathon registration
     formUrl: "https://forms.gle/SvkFWqJ1epSzit8UA",
 
-    // Set to true once registration is open, false to show "Coming Soon"
-    isOpen: true,
-
-    // Last date to register
-    deadline: "27 September 2026 (Sunday)",
+    // Registration mode, deadline and countdown times are managed in the admin panel.
 
     // QR code: auto-generated from formUrl above (no image needed)
     // If you have a custom QR image, set: qrImage: "images/qr-code.png"

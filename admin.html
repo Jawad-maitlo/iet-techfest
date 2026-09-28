@@ -14,6 +14,25 @@
     <section id="dashboard" hidden>
       <div class="dashboard-heading"><div><span class="section-label">Organizer workspace</span><h1>Make it worth sharing.</h1><p class="muted">Your updates appear on the public website as soon as you publish.</p></div><button class="btn btn-ghost" id="logout">Sign out</button></div>
       <div id="dashboard-status" class="form-status" role="status"></div>
+      <section class="admin-card schedule-card" aria-labelledby="schedule-heading">
+        <div class="list-heading"><h2 id="schedule-heading">Registration &amp; countdown</h2><button type="button" class="text-button" id="refresh-schedule">Reload settings</button></div>
+        <p class="muted">All dates and times use Pakistan time (PKT / UTC+5). Updates appear on page refresh or within a minute on an open website.</p>
+        <form id="schedule-form">
+          <fieldset id="schedule-fields" disabled>
+            <label for="registration-mode">Registration control</label>
+            <select id="registration-mode"><option value="auto">Automatic (deadline)</option><option value="open">Manually Open</option><option value="closed">Manually Closed</option></select>
+            <p class="field-help">To extend registration automatically, choose Automatic and set a future deadline. Manually Open stays open until you change this setting.</p>
+            <div class="schedule-dates">
+              <div><label for="registration-deadline">Registration closes at (PKT)</label><input type="datetime-local" id="registration-deadline" step="1" required></div>
+              <div><label for="event-start">Event starts at (PKT)</label><input type="datetime-local" id="event-start" step="1" required></div>
+              <div><label for="event-end">Event ends at (PKT)</label><input type="datetime-local" id="event-end" step="1" required></div>
+            </div>
+            <p class="field-help">The countdown becomes “Event Is Live” at the start time and disappears at the end time. These controls affect the website; manage Google Form responses separately.</p>
+            <div class="form-actions"><button class="btn btn-primary" type="submit" id="schedule-save">Save settings</button></div>
+          </fieldset>
+          <p id="schedule-status" class="form-status" role="status"></p>
+        </form>
+      </section>
       <div class="admin-tabs" role="tablist" aria-label="Content type"><button id="announcements-tab" role="tab" aria-selected="true" aria-controls="announcements-panel">Announcements <span id="announcement-count">—</span></button><button id="photos-tab" role="tab" aria-selected="false" aria-controls="photos-panel" tabindex="-1">Event photos <span id="photo-count">—</span></button></div>
       <section id="announcements-panel" role="tabpanel" aria-labelledby="announcements-tab">
         <div class="editor-layout"><div class="admin-card"><h2 id="editor-title">New announcement</h2><p class="muted">Share dates, reminders, and important updates.</p>
@@ -28,5 +47,5 @@
     </section>
   </main>
   <dialog id="delete-dialog" class="confirm-dialog"><form method="dialog"><h2>Delete this item?</h2><p id="delete-description"></p><p>This permanently removes it from the website.</p><div class="form-actions"><button class="btn btn-ghost" value="cancel" autofocus>Keep item</button><button class="btn btn-primary" value="delete">Delete permanently</button></div></form></dialog>
-  <script src="js/config.js"></script><script src="js/api.js"></script><script src="js/admin.js"></script>
+  <script src="js/config.js"></script><script src="js/api.js"></script><script src="js/schedule.js"></script><script src="js/admin.js"></script>
 </body></html>

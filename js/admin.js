@@ -13,6 +13,7 @@
   function resetEditor() { editing = null; $('announcement-form').reset(); $('editor-title').textContent = 'New announcement'; $('announcement-save').textContent = 'Publish announcement'; $('cancel-edit').hidden = true; }
   function clearPreview() { if (previewUrl) URL.revokeObjectURL(previewUrl); previewUrl = ''; $('photo-preview').hidden = true; $('photo-preview').removeAttribute('src'); }
   function logout(message = '') {
+    $('schedule-fields').disabled = true; $('schedule-form').reset(); status('schedule-status');
     token = ''; sessionVersion++; clearTimeout(sessionTimer); resetEditor(); clearPreview(); $('photo-form').reset(); $('login-form').reset(); $('dashboard').hidden = true; $('login-panel').hidden = false;
     $('admin-announcements').replaceChildren(); $('admin-photos').replaceChildren();
     for (const id of ['announcement-status','photo-status','dashboard-status']) status(id);
@@ -27,11 +28,48 @@
         const result = await request('/auth/login', { method:'POST', body:{ email:$('email').value, password:$('password').value } });
         token = result.token; sessionVersion++; $('password').value = ''; $('login-panel').hidden = true; $('dashboard').hidden = false;
         sessionTimer = setTimeout(() => logout('Your session expired. Please sign in again.'), result.expiresIn * 1000);
-        $('announcements-tab').focus(); await Promise.all([load('announcements', true), load('photos', true)]);
+        $('announcements-tab').focus(); await Promise.all([load('announcements', true), load('photos', true), loadSchedule()]);
       } catch (error) { status('login-status', error.message, true); }
     });
   });
   $('logout').addEventListener('click', () => logout());
+  function fillSchedule(value) {
+    $('registration-mode').value = value.registrationMode;
+    for (const [id, key] of [['registration-deadline', 'registrationDeadline'], ['event-start', 'eventStart'], ['event-end', 'eventEnd']]) $(id).value = EventSchedule.toPKT(value[key]);
+  }
+  async function loadSchedule() {
+    const version = sessionVersion;
+    $('schedule-fields').disabled = true;
+    status('schedule-status', 'Loading settings…');
+    try {
+      const value = await api('/schedule');
+      if (version !== sessionVersion) return;
+      if (!EventSchedule.valid(value)) throw new Error('The schedule could not be read.');
+      fillSchedule(value); $('schedule-fields').disabled = false; status('schedule-status');
+    } catch (error) { if (version === sessionVersion) status('schedule-status', error.message + ' Use Reload settings to try again.', true); }
+  }
+  $('refresh-schedule').addEventListener('click', event => busy(event.currentTarget, loadSchedule));
+  $('schedule-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const version = sessionVersion;
+    const value = { registrationMode: $('registration-mode').value };
+    try {
+      for (const [id, key] of [['registration-deadline', 'registrationDeadline'], ['event-start', 'eventStart'], ['event-end', 'eventEnd']]) value[key] = EventSchedule.fromPKT($(id).value);
+      if (!EventSchedule.valid(value)) throw new Error('Enter valid dates. Event end must be after event start.');
+    } catch (error) { status('schedule-status', error.message, true); return; }
+    await busy(event.submitter, async () => {
+      $('schedule-fields').disabled = true; $('refresh-schedule').disabled = true;
+      status('schedule-status', 'Saving settings…');
+      try {
+        const saved = await api('/schedule', { method: 'PUT', body: value });
+        if (version !== sessionVersion) return;
+        fillSchedule(saved);
+        try { localStorage.setItem('interconnect-schedule:' + window.APP_CONFIG.apiBaseUrl, JSON.stringify(saved)); } catch { /* Optional public settings cache. */ }
+        status('schedule-status', 'Saved. Refresh the website to see the update; open pages refresh settings within a minute.');
+      } catch (error) { if (version === sessionVersion) status('schedule-status', error.message, true); }
+      finally { $('refresh-schedule').disabled = false; if (version === sessionVersion) $('schedule-fields').disabled = false; }
+    });
+  });
   for (const type of ['announcements','photos']) {
     const tab = $(`${type}-tab`);
     tab.addEventListener('click', () => {

@@ -1,138 +1,47 @@
-/* ============================================================
-   REGISTRATION.JS
-   - Reads SITE_DATA.registration
-   - Auto-generates QR code from formUrl
-   - Wires up ALL register buttons on the page
-   - Shows "Coming Soon" state if isOpen = false
-============================================================ */
-(function () {
+(() => {
   const reg = SITE_DATA.registration;
-  const formUrl = reg.formUrl;
-  const isOpen  = reg.isOpen;
-
-  /* ── 1. Wire up ALL register buttons ── */
-  const allRegBtns = document.querySelectorAll(
-    "#nav-register-btn, #mobile-register-btn, .hero-register-btn, .hackathon-register-btn, .cta-register-btn, .pricing-btn"
-  );
-
-  allRegBtns.forEach(btn => {
-    if (isOpen) {
-      btn.href   = formUrl;
-      btn.target = "_blank";
-      btn.rel    = "noopener noreferrer";
-      btn.textContent = "Register Now →";
-    } else {
-      btn.href   = document.getElementById("register") ? "#register" : "index.html#register";
-      btn.classList.add("registration-pending");
-      btn.style.cursor  = "default";
-      // Keep text but show coming soon badge
-      if (!btn.textContent.includes("Coming Soon")) {
-        btn.textContent = "Registration soon";
-      }
-      btn.addEventListener("click", e => {
-        // Still scroll to the register section so they see the QR / form link
-        const section = document.getElementById("register");
-        if (section) { e.preventDefault(); section.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); }
-      });
-    }
-  });
-
-  /* ── 2. Inject the big Register button inside the section ── */
-  const btnWrap = document.getElementById("register-btn-wrap");
-  if (btnWrap) {
-    if (isOpen) {
-      btnWrap.innerHTML = `
-        <a href="${formUrl}" target="_blank" rel="noopener noreferrer"
-           class="btn btn-primary btn-lg reg-main-btn">
-          Register Now →
-        </a>
-      `;
-    } else {
-      btnWrap.innerHTML = `
-        <div class="reg-coming-soon">
-          <span class="reg-coming-badge">⏳ Registration Opening Soon</span>
-          <p>Stay tuned — the form link will appear here once registration opens.</p>
-        </div>
-      `;
-    }
-  }
-
-  /* ── 3. Show form URL as text link ── */
-  const linkText = document.getElementById("reg-form-link-text");
-  if (linkText) {
-    if (isOpen) {
-      linkText.innerHTML = `
-        Or open directly: 
-        <a href="${formUrl}" target="_blank" rel="noopener noreferrer"
-           class="reg-direct-link">${formUrl}</a>
-      `;
-    } else {
-      linkText.innerHTML = `Form link will be shared once registration opens.`;
-    }
-  }
-
-  /* ── 4. Generate QR code ── */
-  const qrWrapper = document.getElementById("qr-wrapper");
-  if (!qrWrapper) return;
-
-  if (!isOpen) {
-    qrWrapper.innerHTML = '<div class="qr-fallback"><p>Registration QR<br>available soon</p></div>';
-    return;
-  }
-
-  // If a custom QR image is provided, use it
-  if (reg.qrImage) {
-    qrWrapper.innerHTML = `<img src="${reg.qrImage}" alt="Registration QR Code" class="qr-img-custom" />`;
-    return;
-  }
-
-  // Otherwise auto-generate QR from formUrl using QRCode.js
-  const qrUrl = isOpen ? formUrl : window.location.href;
-
-  if (typeof QRCode !== "undefined") {
-    // Clear placeholder
-    qrWrapper.innerHTML = "";
-
-    const qr = new QRCode(qrWrapper, {
-      text:          qrUrl,
-      width:         200,
-      height:        200,
-      colorDark:     "#030d2c",
-      colorLight:    "#ffffff",
-      correctLevel:  QRCode.CorrectLevel.H,
+  const buttons = document.querySelectorAll('#nav-register-btn, #mobile-register-btn, .hero-register-btn, .hackathon-register-btn, .cta-register-btn, .pricing-btn');
+  const wrap = document.getElementById('register-btn-wrap');
+  let main;
+  if (wrap) { main = document.createElement('a'); main.className = 'btn btn-primary btn-lg reg-main-btn'; wrap.replaceChildren(main); }
+  const all = [...buttons, ...(main ? [main] : [])];
+  all.forEach(button => button.addEventListener('click', event => {
+    if (!EventSchedule.ready() || !EventSchedule.state(EventSchedule.get()).registrationOpen) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }));
+  let previous;
+  function update() {
+    const settings = EventSchedule.get(), ready = EventSchedule.ready();
+    const open = ready && EventSchedule.state(settings).registrationOpen;
+    const label = !ready ? (EventSchedule.failed() ? 'Registration unavailable' : 'Checking registration…') : open ? 'Register Now →' : 'Registration Closed';
+    document.querySelectorAll('[data-registration-deadline]').forEach(node => {
+      node.textContent = new Date(settings.registrationDeadline).toLocaleString('en-GB', { timeZone: 'Asia/Karachi', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) + ' PKT';
     });
-
-    // Style the canvas/img QRCode.js creates
-    setTimeout(() => {
-      const canvas = qrWrapper.querySelector("canvas");
-      const img    = qrWrapper.querySelector("img");
-      const target = canvas || img;
-      if (target) {
-        target.style.borderRadius = "12px";
-        target.style.background   = "rgba(255,255,255,0.05)";
-      }
-    }, 100);
-
-    if (!isOpen) {
-      // Show a subtle overlay on the QR saying "Coming Soon"
-      const overlay = document.createElement("div");
-      overlay.className = "qr-overlay";
-      overlay.innerHTML = `<span>Form link<br>coming soon</span>`;
-      qrWrapper.style.position = "relative";
-      qrWrapper.appendChild(overlay);
+    if (previous === label) return;
+    previous = label;
+    all.forEach(button => {
+      button.textContent = label;
+      button.setAttribute('aria-disabled', String(!open));
+      button.classList.toggle('registration-pending', !open);
+      if (open) { button.href = reg.formUrl; button.target = '_blank'; button.rel = 'noopener noreferrer'; button.removeAttribute('tabindex'); }
+      else { button.removeAttribute('href'); button.removeAttribute('target'); button.setAttribute('tabindex', '-1'); }
+    });
+    const link = document.getElementById('reg-form-link-text');
+    if (link) {
+      link.replaceChildren();
+      if (open) { const a = document.createElement('a'); a.href = reg.formUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = 'Open registration form ↗'; link.append(a); }
+      else link.textContent = ready ? 'Registration is currently closed.' : 'The registration service may take a moment to start. Please wait or refresh to try again.';
     }
-  } else {
-    // Fallback if library didn't load
-    qrWrapper.innerHTML = `
-      <div class="qr-fallback">
-        <div style="font-size:3rem;margin-bottom:12px">📋</div>
-        <p style="font-size:0.8rem;color:var(--c-muted)">
-          ${isOpen
-            ? `<a href="${formUrl}" target="_blank" class="reg-direct-link">Open Form →</a>`
-            : "QR code will appear<br>once registration opens"
-          }
-        </p>
-      </div>
-    `;
+    document.querySelectorAll('.qr-label').forEach(node => { node.textContent = open ? 'Scan to Register' : label; });
+    document.querySelectorAll('.qr-hint').forEach(node => { node.hidden = !open; });
+    const qr = document.getElementById('qr-wrapper');
+    if (!qr) return;
+    qr.replaceChildren();
+    if (!open) { const p = document.createElement('p'); p.textContent = label; qr.append(p); }
+    else if (reg.qrImage) { const img = document.createElement('img'); img.src = reg.qrImage; img.alt = 'Registration QR Code'; img.className = 'qr-img-custom'; qr.append(img); }
+    else if (typeof QRCode !== 'undefined') new QRCode(qr, { text: reg.formUrl, width: 200, height: 200, colorDark: '#030d2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    else { const p = document.createElement('p'); p.textContent = 'Use the Register Now button to open the form.'; qr.append(p); }
   }
+  update();
+  window.addEventListener('schedulechange', update);
+  setInterval(update, 1000);
 })();

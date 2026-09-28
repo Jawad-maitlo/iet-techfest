@@ -120,3 +120,7 @@ button:disabled { opacity:.6; cursor:wait; }
 .team-linkedin-icon { width:20px; height:20px; object-fit:contain; flex-shrink:0; }
 .team-linkedin:hover { background:#132b50; border-color:#35e9ff; }
 .team-linkedin-placeholder,.team-linkedin-placeholder:hover { color:var(--c-muted); background:#030d2c; border-color:var(--c-border); }
+
+/* Time-controlled registration and countdown states. */
+#countdown[hidden], #countdown .countdown-grid[hidden], .qr-hint[hidden] { display:none !important; }
+.registration-pending[aria-disabled="true"] { opacity:.65; cursor:not-allowed; }

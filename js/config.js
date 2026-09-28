@@ -1,3 +1,1 @@
-window.APP_CONFIG = {
-  apiBaseUrl: 'https://backend-leqt.onrender.com'
-};
+window.APP_CONFIG = {"apiBaseUrl":"https://backend-leqt.onrender.com"};
