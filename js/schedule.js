@@ -16,21 +16,21 @@
   const fromPKT = value => value ? new Date(value + (value.length === 16 ? ':00' : '') + '+05:00').toISOString() : null;
   root.EventSchedule = { defaults, valid, state, toPKT, fromPKT };
   if (!root.document || !root.ContentAPI || document.getElementById('schedule-form')) return;
-  let current = { ...defaults }, ready = !ContentAPI.configured, loading = false, failed = false;
-  const cacheKey = 'interconnect-schedule:' + (root.APP_CONFIG?.apiBaseUrl || 'local');
+  let current = { ...defaults }, event = root.DEFAULT_EVENT || null, ready = !ContentAPI.configured, loading = false, failed = false;
+  const cacheKey = 'interconnect-current-event-v2:' + (root.APP_CONFIG?.apiBaseUrl || 'local');
   try {
     const cached = JSON.parse(localStorage.getItem(cacheKey));
-    if (ContentAPI.configured && valid(cached)) { current = cached; ready = true; }
+    if (ContentAPI.configured && cached && (cached.event === null || valid(cached.schedule))) { event = cached.event; current = cached.schedule || { ...defaults, registrationMode: 'closed' }; ready = true; }
   } catch { /* Storage may be unavailable. */ }
   function notify() { root.dispatchEvent(new Event('schedulechange')); }
-  Object.assign(root.EventSchedule, { get: () => current, ready: () => ready, failed: () => failed });
+  Object.assign(root.EventSchedule, { get: () => current, event: () => event, ready: () => ready, failed: () => failed });
   async function refresh() {
     if (!ContentAPI.configured || loading) return;
     loading = true;
     try {
-      const value = await ContentAPI.request('/schedule');
-      if (!valid(value)) throw new Error('Invalid schedule');
-      current = value; ready = true; failed = false;
+      const value = await ContentAPI.request('/current-event');
+      if (!value || (value.event !== null && !valid(value.schedule))) throw new Error('Invalid schedule');
+      event = value.event; current = value.schedule || { ...defaults, registrationMode: 'closed' }; ready = true; failed = false;
       try { localStorage.setItem(cacheKey, JSON.stringify(value)); } catch { /* Optional cache. */ }
     } catch { failed = true; /* Keep the last confirmed schedule during temporary outages. */ }
     finally { loading = false; notify(); }

@@ -11,7 +11,7 @@ const SITE_DATA = {
     name: "Interconnect University Hackathon",
     tagline: "Think. Build. Connect.",
     organizer: "Batch 24",
-    venue: "IBA — Institute of Emerging Technologies, Khairpur",
+    venue: "Institute of Emerging Technologies, Khairpur Mirs",
     venueMapUrl: "https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur",
     date: "01 October 2026",
     dateShort: "Oct 01, 2026",

@@ -1,5 +1,4 @@
 (() => {
-  const reg = SITE_DATA.registration;
   const buttons = document.querySelectorAll('#nav-register-btn, #mobile-register-btn, .hero-register-btn, .hackathon-register-btn, .cta-register-btn, .pricing-btn');
   const wrap = document.getElementById('register-btn-wrap');
   let main;
@@ -10,14 +9,16 @@
   }));
   let previous;
   function update() {
-    const settings = EventSchedule.get(), ready = EventSchedule.ready();
-    const open = ready && EventSchedule.state(settings).registrationOpen;
+    const settings = EventSchedule.get(), ready = EventSchedule.ready(), event = EventSchedule.event();
+    const reg = { formUrl: event?.registrationUrl || '', qrImage: '' };
+    const open = ready && Boolean(reg.formUrl) && EventSchedule.state(settings).registrationOpen;
     const label = !ready ? (EventSchedule.failed() ? 'Registration unavailable' : 'Checking registration…') : open ? 'Register Now →' : 'Registration Closed';
     document.querySelectorAll('[data-registration-deadline]').forEach(node => {
       node.textContent = new Date(settings.registrationDeadline).toLocaleString('en-GB', { timeZone: 'Asia/Karachi', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }) + ' PKT';
     });
-    if (previous === label) return;
-    previous = label;
+    const signature = label + reg.formUrl;
+    if (previous === signature) return;
+    previous = signature;
     all.forEach(button => {
       button.textContent = label;
       button.setAttribute('aria-disabled', String(!open));
@@ -38,7 +39,10 @@
     qr.replaceChildren();
     if (!open) { const p = document.createElement('p'); p.textContent = label; qr.append(p); }
     else if (reg.qrImage) { const img = document.createElement('img'); img.src = reg.qrImage; img.alt = 'Registration QR Code'; img.className = 'qr-img-custom'; qr.append(img); }
-    else if (typeof QRCode !== 'undefined') new QRCode(qr, { text: reg.formUrl, width: 200, height: 200, colorDark: '#030d2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    else if (typeof QRCode !== 'undefined') {
+      try { new QRCode(qr, { text: reg.formUrl, width: 200, height: 200, colorDark: '#030d2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H }); }
+      catch { qr.replaceChildren(); const p = document.createElement('p'); p.textContent = 'Use the Register Now button to open the form.'; qr.append(p); }
+    }
     else { const p = document.createElement('p'); p.textContent = 'Use the Register Now button to open the form.'; qr.append(p); }
   }
   update();

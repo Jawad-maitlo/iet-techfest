@@ -4,7 +4,7 @@
   function tick() {
     const schedule = EventSchedule.get();
     const { phase, remaining } = EventSchedule.state(schedule);
-    section.hidden = phase === 'ended';
+    section.hidden = !EventSchedule.event() || phase === 'ended';
     section.querySelector('.countdown-grid').hidden = phase !== 'upcoming';
     section.querySelector('.countdown-label').textContent = phase === 'live' ? '🎉 Event Is Live' : '⚡ Event Starts In';
     const values = [Math.floor(remaining / 86400000), Math.floor(remaining / 3600000) % 24, Math.floor(remaining / 60000) % 60, Math.floor(remaining / 1000) % 60];

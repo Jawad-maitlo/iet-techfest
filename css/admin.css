@@ -58,3 +58,11 @@ form>.btn { margin-top:26px; }
 .schedule-dates input { min-width:0; color-scheme:dark; }
 .schedule-card :disabled { opacity:.6; cursor:not-allowed; }
 @media(max-width:800px) { .schedule-dates { grid-template-columns:1fr; gap:0; } }
+.management-card { margin:24px 0; }
+.management-card summary { font-size:1.3rem; font-weight:600; cursor:pointer; }
+.management-card summary span { display:block; margin:8px 0; font-weight:400; }
+.management-card fieldset { border:0; min-width:0; padding:0; }
+.management-card select { width:100%; font:inherit; padding:13px; border:1px solid #244267; border-radius:5px; background:#0d2244; color:#f4f7ff; }
+.management-card label:not(.check-label) { display:block; font-size:.84rem; font-weight:600; margin:24px 0 8px; }
+.management-card :disabled { opacity:.6; cursor:not-allowed; }
+.management-card .upload-preview { max-width:420px; }

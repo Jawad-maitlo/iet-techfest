@@ -5,7 +5,7 @@
   <main class="admin-main">
     <section id="login-panel" class="login-layout">
       <div class="login-intro"><span class="section-label">For the organizing team</span><h1>A connected<br>community starts<br><em>with you.</em></h1><p>Share the news. Capture the moments.<br>Keep the Interconnect community informed.</p><span class="login-signature">INTERCONNECT / BATCH 24</span></div>
-      <div class="admin-card login-card"><span class="section-label">Organizer access</span><h2>Welcome back.</h2><p class="muted">Sign in to manage announcements and event photos.</p>
+      <div class="admin-card login-card"><span class="section-label">Organizer access</span><h2>Welcome back.</h2><p class="muted">Sign in to manage events, team profiles, announcements and photos.</p>
         <p id="setup-notice" class="notice" hidden>The content service has not been connected. Complete the deployment setup before signing in.</p>
         <form id="login-form"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" required placeholder="you@example.com"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required><button class="btn btn-primary" type="submit">Sign in →</button><p id="login-status" class="form-status" role="status"></p></form>
         <p class="login-help">Access is limited to the organizing team. Contact your site administrator if you need help signing in.</p>
@@ -14,6 +14,48 @@
     <section id="dashboard" hidden>
       <div class="dashboard-heading"><div><span class="section-label">Organizer workspace</span><h1>Make it worth sharing.</h1><p class="muted">Your updates appear on the public website as soon as you publish.</p></div><button class="btn btn-ghost" id="logout">Sign out</button></div>
       <div id="dashboard-status" class="form-status" role="status"></div>
+
+      <details class="admin-card management-card" id="event-management">
+        <summary>Manage events <span class="muted">Draft, publish, edit or archive</span></summary>
+        <p class="field-help">Publish makes this the one current event on the home page and archives the previous current event. Drafts stay private.</p>
+        <div class="form-actions"><button class="btn btn-ghost" type="button" id="new-event">New event</button><button class="text-button" type="button" id="reload-events">Reload events</button></div>
+        <label for="event-select">Choose an event</label><select id="event-select"><option value="">New draft</option></select>
+        <form id="event-form"><fieldset id="event-fields" disabled>
+          <label for="ev-name">Event name</label><input id="ev-name" type="text" required maxlength="160">
+          <label for="ev-tagline">Tagline</label><input id="ev-tagline" type="text" maxlength="240">
+          <label for="ev-description">Description</label><textarea id="ev-description" maxlength="10000" rows="4"></textarea>
+          <label for="ev-venue">Venue</label><input id="ev-venue" type="text" maxlength="300">
+          <label for="ev-mapUrl">Google Maps link</label><input id="ev-mapUrl" type="url" placeholder="https://…">
+          <label for="ev-registrationUrl">Registration form link</label><input id="ev-registrationUrl" type="url" placeholder="https://…">
+          <label for="ev-registrationMode">Registration control</label><select id="ev-registrationMode"><option value="auto">Automatic (deadline)</option><option value="open">Manually Open</option><option value="closed">Manually Closed</option></select>
+          <div class="schedule-dates"><div><label for="ev-registrationDeadline">Registration deadline (PKT)</label><input id="ev-registrationDeadline" type="datetime-local" step="1"></div><div><label for="ev-eventStart">Event starts (PKT)</label><input id="ev-eventStart" type="datetime-local" step="1"></div><div><label for="ev-eventEnd">Event ends (PKT)</label><input id="ev-eventEnd" type="datetime-local" step="1"></div></div>
+          <label class="check-label"><input id="ev-free" type="checkbox"> Free registration</label>
+          <label for="ev-feeDetails">Fee details (for paid events)</label><textarea id="ev-feeDetails" maxlength="2000" rows="3" placeholder="Solo: PKR 600"></textarea>
+          <label for="ev-email">Contact email</label><input id="ev-email" type="email" maxlength="254">
+          <label for="ev-whatsapp">WhatsApp with country code</label><input id="ev-whatsapp" type="tel" placeholder="923001234567" maxlength="20">
+          <label for="ev-image">Poster / banner (optional)</label><input id="ev-image" type="file" accept="image/jpeg,image/png,image/webp">
+          <p class="field-help">JPEG, PNG or WebP, up to 8 MB. Leave empty to keep the existing image.</p><img id="ev-preview" class="upload-preview" alt="Event banner preview" hidden>
+          <label class="check-label"><input id="ev-remove-image" type="checkbox"> Remove existing banner</label>
+          <div class="form-actions"><button id="event-save" class="btn btn-primary" type="submit">Save draft</button><button id="event-publish" class="btn btn-ghost" type="submit">Publish / Make Current</button><button id="event-archive" class="text-button" type="button" hidden>Archive event</button></div>
+        </fieldset><p id="event-status" class="form-status" role="status"></p></form>
+      </details>
+      <details class="admin-card management-card" id="team-management">
+        <summary>Manage team profiles <span class="muted">People behind the event</span></summary>
+        <div class="form-actions"><button class="btn btn-ghost" type="button" id="new-member">New member</button><button class="text-button" type="button" id="reload-team">Reload team</button></div>
+        <label for="member-select">Choose a member</label><select id="member-select"><option value="">New member</option></select>
+        <form id="member-form"><fieldset id="member-fields" disabled>
+          <label for="member-name">Full name</label><input id="member-name" type="text" required maxlength="120">
+          <label for="member-role">Role / designation</label><input id="member-role" type="text" required maxlength="160">
+          <label for="member-description">Short description (optional)</label><textarea id="member-description" rows="3" maxlength="1000"></textarea>
+          <label for="member-linkedin">LinkedIn profile (optional)</label><input id="member-linkedin" type="url" placeholder="https://www.linkedin.com/in/…">
+          <p class="field-help">Leave blank to hide the LinkedIn icon.</p>
+          <label for="member-order">Display order (smaller numbers first)</label><input id="member-order" type="number" required min="0" max="10000" step="1" value="0">
+          <label for="member-image">Photo (optional)</label><input id="member-image" type="file" accept="image/jpeg,image/png,image/webp">
+          <p class="field-help">JPEG, PNG or WebP, up to 8 MB. Leave empty to keep the existing photo.</p><img id="member-preview" class="upload-preview" alt="Team photo preview" hidden>
+          <label class="check-label"><input id="member-remove-image" type="checkbox"> Remove existing photo</label>
+          <div class="form-actions"><button class="btn btn-primary" type="submit">Save member</button><button class="text-button" type="button" id="delete-member" hidden>Delete member</button></div>
+        </fieldset><p id="member-status" class="form-status" role="status"></p></form>
+      </details>
       <section class="admin-card schedule-card" aria-labelledby="schedule-heading">
         <div class="list-heading"><h2 id="schedule-heading">Registration &amp; countdown</h2><button type="button" class="text-button" id="refresh-schedule">Reload settings</button></div>
         <p class="muted">All dates and times use Pakistan time (PKT / UTC+5). Updates appear on page refresh or within a minute on an open website.</p>
@@ -47,5 +89,5 @@
     </section>
   </main>
   <dialog id="delete-dialog" class="confirm-dialog"><form method="dialog"><h2>Delete this item?</h2><p id="delete-description"></p><p>This permanently removes it from the website.</p><div class="form-actions"><button class="btn btn-ghost" value="cancel" autofocus>Keep item</button><button class="btn btn-primary" value="delete">Delete permanently</button></div></form></dialog>
-  <script src="js/config.js"></script><script src="js/api.js"></script><script src="js/schedule.js"></script><script src="js/admin.js"></script>
+  <script src="js/config.js"></script><script src="js/api.js"></script><script src="js/schedule.js"></script><script src="js/portal-admin.js"></script><script src="js/admin.js"></script>
 </body></html>

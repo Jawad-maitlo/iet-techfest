@@ -124,3 +124,16 @@ button:disabled { opacity:.6; cursor:wait; }
 /* Time-controlled registration and countdown states. */
 #countdown[hidden], #countdown .countdown-grid[hidden], .qr-hint[hidden] { display:none !important; }
 .registration-pending[aria-disabled="true"] { opacity:.65; cursor:not-allowed; }
+/* Admin-managed current event and official host identity. */
+.hero-title { font-size:clamp(2.5rem,4.8vw,4.8rem); overflow-wrap:anywhere; }
+.event-tagline { margin:16px 0; font-size:1.45rem; font-weight:500; }
+[data-event-description], #event-fees { white-space:pre-line; }
+.event-banner { width:100%; max-height:640px; object-fit:contain; border-radius:8px; background:var(--c-bg); }
+.event-fees { max-width:760px; margin:32px auto; padding:28px; text-align:center; }
+.event-fees h3 { margin-bottom:12px; }
+.host-logo-wrap { display:block; max-width:390px; padding:18px; background:#0d2244; border-radius:6px; margin:12px 0; }
+.host-logo { width:100%; height:auto; }
+.footer-brand .host-logo-wrap { max-width:300px; }
+#no-current-event { padding:80px 24px; text-align:center; }
+.host-university h2 { font-size:1.5rem; }
+.qr-wrapper > p { color:#030d2c; padding:20px; text-align:center; }
