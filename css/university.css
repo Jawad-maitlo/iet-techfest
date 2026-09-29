@@ -141,7 +141,6 @@ button:disabled { opacity:.6; cursor:wait; }
 .organization-group h2 { font-size:clamp(1.4rem,3vw,2rem); }
 .organization-note { color:var(--c-muted); margin:10px 0 24px; }
 .organization-group[data-group="executive"] .team-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:850px; margin:auto; }
-.roster-summary { background:#132b50; border-left:3px solid #35e9ff; padding:18px 24px; }
 .team-secondary { color:#b7c9e5; margin-top:12px; font-size:.85rem; }
 #photos-grid { display:block; columns:3; column-gap:24px; }
 #photos-grid .content-state { column-span:all; }

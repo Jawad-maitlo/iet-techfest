@@ -6,8 +6,6 @@
     const signature = JSON.stringify(members); if (signature === previous) return; previous = signature;
     grid.replaceChildren();
     grid.className='organization';
-    const count=members.filter(x=>x.officialRoster).length;
-    const summary=document.createElement('p');summary.className='roster-summary';summary.textContent=`Official execution roster: ${count} published members · Target 40. Planning contributions are separate.`;grid.append(summary);
     if (!members.length) { const p=document.createElement('p'); p.textContent='Team details will be announced soon.'; grid.append(p); }
     const containers=new Map();
     for(const group of [...Organization,{id:'unassigned',label:'Organizing Team',note:'Our existing organizers'}]) {
