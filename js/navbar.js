@@ -17,7 +17,7 @@
     const page = document.body.dataset.page;
     if (page) {
       document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
-        const active = link.getAttribute('href') === (page === 'home' ? 'index.html' : `${page}.html`);
+        const active = link.getAttribute('href') === (page === 'home' ? './' : `${page}/`);
         link.classList.toggle('active', active);
         if (active) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');

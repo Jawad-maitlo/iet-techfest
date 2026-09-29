@@ -4,6 +4,31 @@ window.PortalAdmin = {
     let events = [], members = [], eventId = '', memberId = '', eventPreview, memberPreview;
     const eventKeys = ['name','tagline','description','venue','mapUrl','registrationUrl','registrationMode','feeDetails','email','whatsapp'];
     const dates = ['registrationDeadline','eventStart','eventEnd'];
+    $('member-group').replaceChildren(new Option('Organizing Team (not assigned yet)', 'unassigned'), ...Organization.map(g=>new Option(g.label,g.id)));
+    function slots(selected='') {
+      const group=Organization.find(g=>g.id===$('member-group').value);
+      $('member-slot').replaceChildren(new Option('Custom role / additional member',''),...(group?.roles || []).map(role=>new Option(role,role)));
+      $('member-slot').value=selected;
+      $('member-role').readOnly=!!selected;
+      if(selected)$('member-role').value=selected;
+    }
+    function planner() {
+      const active=members.filter(x=>x.status!=='archived');
+      $('roster-count').textContent=`Official roster: ${active.filter(x=>x.officialRoster && x.status==='published').length} published / target 40; ${active.filter(x=>x.officialRoster && x.status==='draft').length} drafts. One person has one primary role. Existing profiles remain visible until you move or unpublish them.`;
+      $('role-slots').replaceChildren();
+      for(const group of Organization){
+        const section=document.createElement('section');const heading=document.createElement('h3');heading.textContent=group.label;section.append(heading);
+        const note=document.createElement('p');note.className='field-help';note.textContent=group.note || `Planning capacity: ${group.capacity}`;section.append(note);
+        for(const role of group.roles){
+          const member=active.find(x=>x.group===group.id && x.slot===role);
+          const button=document.createElement('button');button.type='button';button.className='role-slot';button.textContent=`${role} — ${member ? member.name+' ('+member.status+') · Edit' : 'Empty · Assign'}`;
+          button.addEventListener('click',()=>{if($('member-fields').disabled)return;if(member)fillMember(member);else{$('member-group').value=group.id;slots(role);} $('member-name').focus();});section.append(button);
+        }
+        $('role-slots').append(section);
+      }
+    }
+    $('member-group').addEventListener('change',()=>slots());
+    $('member-slot').addEventListener('change',()=>{const value=$('member-slot').value;$('member-role').readOnly=!!value;if(value)$('member-role').value=value;});
     const message = (id, text = '', error = false) => { $(id).textContent = text; $(id).classList.toggle('error', error); };
     function preview(prefix, src) {
       const img = $(prefix + '-preview');
@@ -22,7 +47,14 @@ window.PortalAdmin = {
     }
     function fillMember(item) {
       memberId = item?.id || ''; $('member-form').reset();
-      ['name','role','description','linkedin'].forEach(key => { $('member-' + key).value = item?.[key] || ''; });
+      ['name','role','description','linkedin','secondary'].forEach(key => { $('member-' + key).value = item?.[key] || ''; });
+      $('member-group').value=item?.group || 'unassigned';slots(item?.slot || '');
+      $('member-officialRoster').checked=!!item?.officialRoster;
+      $('member-save').textContent=item ? 'Save changes' : 'Save draft';
+      $('member-draft').hidden=item?.status!=='published';
+      $('member-archive').hidden=!item || item.status==='archived';
+      $('member-restore').hidden=item?.status!=='archived';
+      $('member-publish').hidden=item?.status==='archived';
       $('member-order').value = item?.order ?? (members.length ? Math.max(...members.map(m => m.order)) + 1 : 0);
       $('member-select').value = memberId; $('delete-member').hidden = !item;
       $('member-fields').disabled = false; preview('member', item?.photo); message('member-status');
@@ -39,7 +71,7 @@ window.PortalAdmin = {
     }
     async function loadTeam() {
       const current = version();
-      try { const data = await api('/team'); if (current !== version()) return false; members = data.items; options('member-select', members, 'New member', memberId); $('member-fields').disabled = false; return true; }
+      try { const data = await api('/admin/team'); if (current !== version()) return false; members = data.items; options('member-select', members, 'New member', memberId); planner(); $('member-fields').disabled = false; return true; }
       catch (error) { if (current === version()) message('member-status', error.message + ' Use Reload team to retry.', true); return false; }
     }
     function fileInput(prefix) {
@@ -85,17 +117,23 @@ window.PortalAdmin = {
       });
     });
     $('member-form').addEventListener('submit', async event => {
-      event.preventDefault(); await run('member', async active => {
-        const file = fileInput('member'), body = { order: Number($('member-order').value) };
-        ['name','role','description','linkedin'].forEach(key => { body[key] = $('member-' + key).value; });
+      event.preventDefault(); const publish=event.submitter?.id==='member-publish'; await run('member', async active => {
+        const file = fileInput('member'), body = { order: Number($('member-order').value), officialRoster:$('member-officialRoster').checked };
+        ['name','role','description','linkedin','secondary','group','slot'].forEach(key => { body[key] = $('member-' + key).value; });
         const saved = await api(memberId ? `/admin/team/${memberId}` : '/admin/team', { method: memberId ? 'PUT' : 'POST', body });
         if (!active()) return; memberId = saved.id;
         try { await imageUpdate('team', memberId, 'member', file); }
         catch (error) { await loadTeam(); throw new Error('Profile saved, but the photo was not updated: ' + error.message); }
         if (!active()) return;
+        if(publish)await api(`/admin/team/${memberId}/publish`,{method:'POST'});
+        if (!active()) return;
         if (!await loadTeam()) throw new Error('Profile saved, but the list could not be reloaded. Use Reload team.');
-        if (!active()) return; fillMember(members.find(x => x.id === memberId)); message('member-status', 'Profile saved. The Team page updates on refresh or within a minute.');
+        if (!active()) return; fillMember(members.find(x => x.id === memberId)); message('member-status', publish ? 'Profile published. The Team page updates on refresh or within a minute.' : 'Profile saved. Drafts stay private; published profiles update on refresh or within a minute.');
       });
+    });
+    for(const action of ['draft','archive','restore']) $('member-'+action).addEventListener('click',()=>{
+      if(!memberId || !confirm(`${action==='restore'?'Restore this profile to draft':action==='draft'?'Unpublish this profile':'Archive this profile'}?`))return;
+      run('member',async active=>{await api(`/admin/team/${memberId}/${action}`,{method:'POST'});if(!active())return;await loadTeam();if(active()){fillMember(members.find(x=>x.id===memberId));message('member-status','Profile '+(action==='restore'?'restored to draft':action==='draft'?'unpublished':'archived')+'.');}});
     });
     $('event-archive').addEventListener('click', () => {
       if (!eventId || !confirm('Archive this event? If it is current, the home page will show that no event is currently open.')) return;
@@ -136,6 +174,7 @@ window.PortalAdmin = {
         $('event-form').reset(); $('member-form').reset();
         $('event-fields').disabled = true; $('member-fields').disabled = true;
         options('event-select', [], 'New draft', ''); options('member-select', [], 'New member', '');
+        $('role-slots').replaceChildren(); $('roster-count').textContent='';
         preview('ev', ''); preview('member', ''); message('event-status'); message('member-status');
       }
     };

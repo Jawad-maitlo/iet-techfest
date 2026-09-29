@@ -66,3 +66,10 @@ form>.btn { margin-top:26px; }
 .management-card label:not(.check-label) { display:block; font-size:.84rem; font-weight:600; margin:24px 0 8px; }
 .management-card :disabled { opacity:.6; cursor:not-allowed; }
 .management-card .upload-preview { max-width:420px; }
+.role-planner { margin:20px 0; padding:16px; border:1px solid var(--c-border); border-radius:8px; }
+.role-planner summary { cursor:pointer; }
+#role-slots { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin-top:20px; }
+#role-slots h3 { font-size:1rem; }
+.role-slot { display:block; width:100%; text-align:left; color:#f4f7ff; background:#132b50; border:1px solid #244267; border-radius:4px; padding:10px; margin:6px 0; cursor:pointer; overflow-wrap:anywhere; }
+.role-slot:hover,.role-slot:focus-visible { border-color:#35e9ff; }
+@media(max-width:650px) { #role-slots { grid-template-columns:1fr; } }

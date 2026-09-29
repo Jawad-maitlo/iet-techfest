@@ -80,8 +80,8 @@ section[id] { scroll-margin-top:95px; }
 .load-more { margin:28px auto 0; display:flex; }
 .photo-card { padding:0; overflow:hidden; }
 .photo-card button { display:block; border:0; background:#132b50; width:100%; cursor:zoom-in; }
-.photo-card img { width:100%; aspect-ratio:4/3; object-fit:cover; transition:transform .25s; }
-.photo-card button:hover img { transform:scale(1.03); }
+.photo-card img { display:block; width:100%; height:auto; aspect-ratio:auto; object-fit:contain; transition:filter .25s; }
+.photo-card button:hover img { filter:brightness(.82); }
 .photo-card figcaption { padding:18px 22px; }
 .lightbox { border:0; border-radius:8px; margin:auto; padding:20px; max-width:min(94vw,1100px); max-height:94vh; background:#0d2244; }
 .lightbox::backdrop { background:#000615e6; }
@@ -136,4 +136,23 @@ button:disabled { opacity:.6; cursor:wait; }
 .footer-brand .host-logo-wrap { max-width:300px; }
 #no-current-event { padding:80px 24px; text-align:center; }
 .host-university h2 { font-size:1.5rem; }
+.organization { display:block; }
+.organization-group { margin-top:42px; padding-top:28px; border-top:1px solid var(--c-border); }
+.organization-group h2 { font-size:clamp(1.4rem,3vw,2rem); }
+.organization-note { color:var(--c-muted); margin:10px 0 24px; }
+.organization-group[data-group="executive"] .team-grid { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:850px; margin:auto; }
+.roster-summary { background:#132b50; border-left:3px solid #35e9ff; padding:18px 24px; }
+.team-secondary { color:#b7c9e5; margin-top:12px; font-size:.85rem; }
+#photos-grid { display:block; columns:3; column-gap:24px; }
+#photos-grid .content-state { column-span:all; }
+.photo-card { position:relative; break-inside:avoid; margin:0 0 24px; transition:border-color .25s,box-shadow .25s; }
+.photo-card button { position:relative; padding:0; }
+.photo-card figcaption { font-size:1rem; line-height:1.6; white-space:pre-wrap; background:linear-gradient(135deg,#132b50,#071632); }
+.photo-view-hint { position:absolute; bottom:16px; right:16px; padding:8px 12px; border-radius:4px; background:#030d2ce8; color:#fff; font-size:.8rem; opacity:0; transform:translateY(5px); transition:opacity .25s,transform .25s; }
+.photo-card:hover,.photo-card:focus-within { border-color:#35e9ff; box-shadow:0 8px 24px #0005; }
+.photo-card:hover .photo-view-hint,.photo-card:focus-within .photo-view-hint { opacity:1; transform:none; }
+.photo-card button:focus-visible { outline:3px solid #35e9ff; outline-offset:-3px; }
+@media(hover:none) { .photo-view-hint { opacity:1; transform:none; } }
+@media(max-width:900px) { #photos-grid { columns:2; } }
+@media(max-width:560px) { #photos-grid { columns:1; } .organization-group[data-group="executive"] .team-grid { grid-template-columns:1fr; } }
 .qr-wrapper > p { color:#030d2c; padding:20px; text-align:center; }

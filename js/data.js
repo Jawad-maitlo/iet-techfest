@@ -15,7 +15,7 @@ const SITE_DATA = {
     venueMapUrl: "https://maps.google.com/?q=IBA+Institute+of+Emerging+Technologies+Khairpur",
     date: "01 October 2026",
     dateShort: "Oct 01, 2026",
-    logo: "images/logo.png",       // ← Replace with your real logo path
+    logo: "images/logos/logo.png",       // ← Replace with your real logo path
   },
 
   /* ── REGISTRATION ── */

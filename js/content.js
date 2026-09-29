@@ -7,7 +7,8 @@
     const card = el('figure', 'content-card photo-card');
     const button = el('button'); button.type = 'button'; button.setAttribute('aria-label', `View photo: ${item.caption}`);
     const img = el('img'); img.src = imageUrl(item.url); img.alt = item.caption; img.loading = 'lazy';
-    button.append(img); card.append(button, el('figcaption', '', item.caption));
+    if(item.width > 0 && item.height > 0){img.width=item.width;img.height=item.height;}
+    button.append(img, el('span','photo-view-hint','View full size ↗')); card.append(button, el('figcaption', '', item.caption));
     button.addEventListener('click', () => {
       const full = document.getElementById('viewer-image'); full.src = imageUrl(item.url); full.alt = item.caption;
       document.getElementById('viewer-caption').textContent = item.caption; dialog.showModal();
